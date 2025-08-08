@@ -9,6 +9,9 @@ import commentRoutes from './routes/commentRoutes';
 import categoryRoutes from './routes/categoryRoutes';
 import { notFound, errorHandler } from './middleware/errorMiddleware';
 
+//try
+import path from 'path';
+
 // 加载环境变量
 dotenv.config();
 
@@ -17,6 +20,25 @@ connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+
+//这里
+// 托管静态文件
+app.use(express.static(path.join(__dirname, '../../public')));
+
+// API路由
+app.get('/api/data', (req, res) => {
+    res.json({ message: "Hello from API!" });
+});
+
+// 处理前端路由
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../public/index.html'));
+});
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
 
 // 添加请求日志中间件（放在最前面）
 app.use((req, res, next) => {

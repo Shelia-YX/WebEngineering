@@ -1,12 +1,26 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/server.js",
+  "bin": "dist/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec ts-node src/server.ts",
-    "build": "tsc",
-    "start": "node dist/server.js"
+    "build": "npm run compile && npm run pkg",
+    "start": "node dist/server.js",
+    "compile": "tsc",
+    "postcompile": "cp -r ./public ./dist/",
+    "pkg": "pkg . --out-path dist/"
+  },
+  "pkg": {
+    "assets": [
+      "dist/public/**/*"
+    ],
+    "targets": [
+      "node18-linux-x64",
+      "node18-win-x64",
+      "node18-macos-x64"
+    ]
   },
   "keywords": [],
   "author": "",
@@ -26,7 +40,9 @@
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.1.0",
+    "ncp": "^2.0.0",
     "nodemon": "^3.1.10",
+    "pkg": "^5.8.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   }
